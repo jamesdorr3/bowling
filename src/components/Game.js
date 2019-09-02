@@ -1,40 +1,69 @@
 import React from 'react'
 import Player from './Player'
 
+var _ = require('lodash');
+
 export default class Game extends React.Component{
 
-  state = {
-    playerNames: ['']
+  makeAllRolls = () => {
+    const rolls = []
+    for(let i=0;i<(10*2)+1;i++){ rolls.push('') } // 10 frames of 2 throws/rolls max, plus 2 extra at the end
+    return [...rolls]
   }
 
-  handleClick = () => {
-    const playerNamesCopy = [...this.state.playerNames]
-    playerNamesCopy.push('')
-    this.setState({playerNames: playerNamesCopy})
+  newPlayer = {name:'',rolls:this.makeAllRolls()}
+
+  state = {
+    players: [
+      _.cloneDeep(this.newPlayer)
+    ]
+  }
+
+  handleAddPlayer = () => {
+    const playersCopy = [...this.state.players] // only shallow copy needed
+    playersCopy.push(_.cloneDeep(this.newPlayer))
+    this.setState({players: playersCopy})
   }
 
   handleNameChange = (e) => {
-    const playerNamesCopy = [...this.state.playerNames]
     const index = parseInt(e.target.id)
-    playerNamesCopy[index] = e.target.value.toUpperCase()
-    this.setState({playerNames: playerNamesCopy})
-    // document.querySelector(`#player-${index+1}`).click() // I didn't want to use it here, just wanted to test if it works
+    const playersCopy = _.cloneDeep(this.state.players) // deep copy needed
+    playersCopy[index].name = e.target.value.toUpperCase()
+    this.setState({players: playersCopy})
   }
 
   handleDeletePlayer = (index) => {
-    const playerNamesCopy = [...this.state.playerNames]
-    playerNamesCopy.splice(index, 1)
-    this.setState({playerNames: playerNamesCopy})
+    const playersCopy = [...this.state.players]
+    playersCopy.splice(index, 1)
+    this.setState({players: playersCopy})
+  }
+
+  handleUpdateRoll = (e) => { // keyDown eventListeners don't work on Android
+    const lastNumber = e.target.value[e.target.value.length -1] || '' // the '' is for delete button
+    const id = e.target.id.split('-')
+    const playerIndex = parseInt(id[0])
+    const rollIndex = parseInt(id[1])
+    if( ((rollIndex%2===0 || rollIndex===19) && lastNumber.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
+      ( (rollIndex%2===1) && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
+      lastNumber === ''
+    ) {
+      const playersCopy = _.cloneDeep(this.state.players)
+      playersCopy[playerIndex].rolls[rollIndex] = lastNumber.toUpperCase()
+      this.setState({players: playersCopy})
+    }
+    // this.determineNextFocus(e, lastNumber)
   }
 
   render(){
+    console.log(React.version)
     return(
       <div className='game'>
-        <button onClick={this.handleClick}>Add Player</button>
+        <button onClick={this.handleAddPlayer}>Add Player</button>
         {/* <div></div> */}
         {/* <input name='name' placeholder='Player Name' type='text' /> */}
-        {this.state.playerNames.map((name, i)=>< Player playerName={name} key={i} id={i} handleNameChange={this.handleNameChange} 
-          handleDeletePlayer={this.handleDeletePlayer}
+        {this.state.players.map((player, i)=>< Player playerName={player.name} rolls={player.rolls} key={i} id={i} 
+          handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
+          handleUpdateRoll={this.handleUpdateRoll}
           />)}
       </div>
     )

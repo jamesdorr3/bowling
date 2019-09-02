@@ -1,51 +1,39 @@
 import React from 'react'
-// import Frame from './Frame';
 
 export default class Player extends React.Component{
 
-  // constructor(props){
-  //   super(props)
+  // state = {
+  //   rolls: [''] // keep '' to not throw error
   // }
 
-  state = {
-    rolls: [''] // keep '' to not throw error
-  }
+  // componentDidMount = () => { // adds all possible throws/rolls to the player's state
+  //   const rolls = []
+  //   for(let i=0;i<(10*2)+1;i++){ // 10 frames of 2 throws/rolls max, plus 2 extra at the end
+  //     rolls.push('')
+  //   }
+  //   this.setState({rolls: rolls})
+  // }
 
-  componentDidMount = () => { // adds all possible throws/rolls to the player's state
-    const rolls = []
-    for(let i=0;i<(10*2)+1;i++){ // 10 frames of 2 throws/rolls max, plus 2 extra at the end
-      rolls.push('')
-    }
-    this.setState({rolls: rolls})
-  }
+  id = (index) => `${this.props.id}-${index}`
 
   createFrames = () => {
-    return this.state.rolls.map( (roll,i) =>{
-      return <span className='roll' key={i}>
-        <input id={i} key={i} name='roll' type='text' value={this.state.rolls[i]} 
-        onChange={this.handleChange} onFocus={this.handleFocus} ref={input => this[`roll-${this.props.id}-${i}`] = input} 
-        disabled={(this.state.rolls[i-1]==='X' && i<19) ? true : false} placeholder={i}
+    return this.props.rolls.map( (roll,i) =>{
+      return <span className='roll' key={this.id(i)}>
+        <input id={this.id(i)} key={this.id(i)} name='roll' type='text' value={this.props.rolls[i]} 
+        onChange={this.handleUpdateRoll} onFocus={this.handleFocus} ref={input => this[`roll-${this.props.id}-${i}`] = input} 
+        disabled={(this.props.rolls[i-1]==='X' && i<19) ? true : false} placeholder={this.id(i)}
         />
       </span>
     })
   }
 
-  handleChange = (e) => { // did this instead of keydown eventListener so it will work on android, too
-    const lastNumber = e.target.value[e.target.value.length -1] || '' // the '' is for delete button
-    const id = parseInt(e.target.id)
-    if( ((id%2===0 || id===19) && lastNumber.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
-      ( (id%2===1) && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
-      lastNumber === ''
-    ) {
-        const rollsCopy = [...this.state.rolls]
-        rollsCopy[e.target.id] = lastNumber.toUpperCase()
-        this.setState({rolls: rollsCopy})
-    }
-    this.determineNextFocus(e, lastNumber)
+  handleUpdateRoll = (e) => { // did this instead of keydown eventListener so it will work on android, too
+    this.props.handleUpdateRoll(e)
+    // this.determineNextFocus(e, e.target.value.toUpperCase())
   }
 
   sumFrames = (nonBonusFramesCount = 20, defaultMessage = 'Start Game') => {
-    const rollsAsStrings = [...this.state.rolls]
+    const rollsAsStrings = [...this.props.rolls]
     const rollsAsNumbers = rollsAsStrings.map((roll,i)=>{
       if(roll.match(/[0-9]/)){return parseInt(roll)}
       else if(roll==='X'){return 10}
@@ -73,13 +61,13 @@ export default class Player extends React.Component{
   }
 
   sumAllFrames = (message = 'Start Game') => {
-    const framesToCount = this.state.rolls[18]==='X' ? 19 : 20
+    const framesToCount = this.props.rolls[18]==='X' ? 19 : 20
     return this.sumFrames(framesToCount, message)
   }
 
   handleFocus = (e) => {
     const index = parseInt(e.target.id)
-    if(index>0 && ( (this.state.rolls[index-2]!=='X' || index===20) && !this.state.rolls[index-1])){
+    if(index>0 && ( (this.props.rolls[index-2]!=='X' || index===20) && !this.props.rolls[index-1])){
       this[`roll-${this.props.id}-${index - 1}`].focus()
     }
   }
@@ -115,23 +103,19 @@ export default class Player extends React.Component{
     }
   }
 
-  handleDelete = () => {
-    this.props.handleDeletePlayer(this.props.id)
-  }
-
   render(){
     return(
       <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
         <input value={this.props.playerName} name='nameInput' id={this.props.id} onChange={this.props.handleNameChange} placeholder='Player Name' />
-        <button onClick={this.handleDelete}>Delete {this.props.playerName}</button>
+        <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
         <div className='playerGame'>
           {this.createFrames()}
           <p className='sum'>
             {this.sumAllFrames()}
           </p>
-          {this.state.rolls.slice((this.state.rolls.length + 1) / 2).map((unused, i)=>{
+          {this.props.rolls.slice((this.props.rolls.length + 1) / 2).map((unused, i)=>{
             const sumFramesFunction = (i === 9) ? this.sumAllFrames('_') : this.sumFrames(i*2+2, '_')
-            return <div key={i} id={i}>{!!this.state.rolls[i*2] ? sumFramesFunction : '_'}</div>
+            return <div key={i} id={i}>{!!this.props.rolls[i*2] ? sumFramesFunction : '_'}</div>
           })}
         </div>
       </div>
