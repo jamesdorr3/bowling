@@ -1,33 +1,10 @@
-.App {
-  text-align: center;
-}
+/* .frame{display:inline-grid;grid-template-columns:1fr 1fr;border:1px solid black;}
+.frame input{width:40px;font-size:20px;text-align:center;}
+.frame p{grid-column:span 2;text-align:center;font-size:30px;margin:15px} */
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+.player{border:1px solid black;padding:5px;display:grid;grid-template-columns:repeat(22,1fr);margin:20px}
+.player input{max-width:30px;margin:0;padding:0;font-size:20px;text-align:center}
+/* .player input:nth-child(odd){border-right:1px solid black} */
+.player .sum{background:lime;text-align:center;padding:7px 0 0 0;grid-row:span 2;width:100px}
+.player p{grid-column:span 2;border-right:1px solid black;margin:0;font-size:20px;text-align:center}
+.player p:last-child{grid-column:span 3}
