@@ -24,7 +24,7 @@ export default class Player extends React.Component{
       return <span className='roll' key={i}>
         <input id={i} key={i} name='roll' type='text' value={this.state.rolls[i]} 
         onChange={this.handleChange} onFocus={this.handleFocus} ref={input => this[`roll-${this.props.id}-${i}`] = input} 
-        disabled={(this.state.rolls[i-1]==='X' && i<19) ? true : false}
+        disabled={(this.state.rolls[i-1]==='X' && i<19) ? true : false} placeholder={i}
         />
       </span>
     })
@@ -85,7 +85,6 @@ export default class Player extends React.Component{
   }
 
   directFocusToChild = (e) => {
-    console.log(e.target.id)
     if(!e.target.name){
       this[`roll-${this.props.id}-20`].focus()
     }
@@ -94,17 +93,26 @@ export default class Player extends React.Component{
   determineNextFocus = (e, lastNumber) => {
     const rollIndex = parseInt(e.target.id)
     const playerIndex = parseInt(this.props.id)
-    if(rollIndex>18){this.determineNextFocusPast18(e, lastNumber)}
+    if(rollIndex>=18){this.determineNextFocusLastFrame(e, lastNumber)}
     else if(rollIndex%2===1 || lastNumber.toUpperCase()==='X'){
       const nextPlayer = document.querySelector(`#player-${playerIndex + 1}`)
-      console.log(nextPlayer)
       if(nextPlayer){nextPlayer.click()}
-      else(document.querySelector("#player-0")).click()
+      else(document.querySelector("#player-0").click())
+    }else{
+      this[`roll-${playerIndex}-${rollIndex+1}`].focus()
     }
   }
   
-  determineNextFocusPast18 = (e, lastnumber) => {
-    console.log(100)
+  determineNextFocusLastFrame = (e, lastNumber) => {
+    const rollIndex = parseInt(e.target.id)
+    const playerIndex = parseInt(this.props.id)
+    if( rollIndex===20 || (rollIndex===19 && lastNumber.match(/[0-9]/))){
+      const nextPlayer = document.querySelector(`#player-${playerIndex + 1}`)
+      if(nextPlayer){nextPlayer.click()}
+      else(document.querySelector("#player-0")).click()
+    }else{
+      this[`roll-${playerIndex}-${rollIndex+1}`].focus()
+    }
   }
 
   render(){
