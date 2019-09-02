@@ -48,7 +48,9 @@ export default class Player extends React.Component{
     if(rollsAsNumbersWithoutNulls.length > 0){ // otherwise this block throws an error
 
       let extraPoints = 0
-      rollsAsStringsWithoutNulls.forEach((char,i) => {
+      let frame10Length = 20
+      if(rollsAsStrings[18]==='X'){frame10Length=19}
+      rollsAsStrings.slice(0,frame10Length).filter(x=>!!x).forEach((char,i) => {
         if(char==='X'){
           extraPoints += ((rollsAsNumbersWithoutNulls[i+1] || 0) + (rollsAsNumbersWithoutNulls[i+2] || 0)) // trailing 0s prevent NaN return for incomplete game
         }else if(char==='/'){
@@ -56,10 +58,9 @@ export default class Player extends React.Component{
         }
       })
 
-      let nonBonusRolls = rollsAsNumbers.slice(0,20)
-      if(rollsAsStrings[18]==='X'){nonBonusRolls = rollsAsNumbers.slice(0,18)}
+      const nonBonusRolls = rollsAsNumbers.slice(0,frame10Length) // .splice(0,18) good for strike on 18, otherwise .splice(0,20)
 
-      return nonBonusRolls.reduce((sum, current)=>sum+current) + extraPoints // .splice(0,18) good for strike on 18, otherwise .splice(0,19) ?
+      return nonBonusRolls.reduce((sum, current)=>sum+current) + extraPoints
 
     }else{return 'Start bowling!'}
   }
@@ -69,19 +70,12 @@ export default class Player extends React.Component{
       <div className='player'>
         {/* <Frame /> */}
         {this.createFrames()}
-        <div className='sum'>
+        <span className='sum'>
           {this.sumAllFrames()}
-        </div>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
-        <p>20</p>
+        </span>
+        {this.state.rolls.slice((this.state.rolls.length + 1) / 2).map((unused, i)=>{
+          return <div key={i} id={i}>{this.sumAllFrames()}</div>
+        })}
       </div>
     )
   }

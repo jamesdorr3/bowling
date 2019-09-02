@@ -5,6 +5,7 @@
 .player{border:1px solid black;padding:5px;display:grid;grid-template-columns:repeat(22,1fr);margin:20px}
 .player input{max-width:30px;margin:0;padding:0;font-size:20px;text-align:center}
 /* .player input:nth-child(odd){border-right:1px solid black} */
-.player .sum{background:lime;text-align:center;padding:7px 0 0 0;grid-row:span 2;width:100px}
-.player p{grid-column:span 2;border-right:1px solid black;margin:0;font-size:20px;text-align:center}
-.player p:last-child{grid-column:span 3}
+.player .sum{text-align:center;padding:7px 0 0 0;grid-row:span 2;width:100px;border-left:1px solid black}
+.player div{grid-column:span 2;margin:0;font-size:20px;text-align:center;height:30px;padding-top:10px}
+.player div:not(:last-child){border-right:1px solid black}
+.player div:last-child{grid-column:span 3}
