@@ -1,11 +1,19 @@
 /* .frame{display:inline-grid;grid-template-columns:1fr 1fr;border:1px solid black;}
 .frame input{width:40px;font-size:20px;text-align:center;}
 .frame p{grid-column:span 2;text-align:center;font-size:30px;margin:15px} */
+input, button{font-size:15px;padding:5px}
+.game button{background:lime;margin:5px}
 
-.player{border:1px solid black;padding:5px;display:grid;grid-template-columns:repeat(22,1fr);margin:20px}
-.player input{max-width:30px;margin:0;padding:0;font-size:20px;text-align:center}
-/* .player input:nth-child(odd){border-right:1px solid black} */
-.player .sum{text-align:center;padding:7px 0 0 0;grid-row:span 2;width:100px;border-left:1px solid black}
-.player div{grid-column:span 2;margin:0;font-size:20px;text-align:center;height:30px;padding-top:10px}
-.player div:not(:last-child){border-right:1px solid black}
-.player div:last-child{grid-column:span 3}
+.player{border:1px solid black;margin:5px;padding:5px}
+.player input,.player button{margin:0px 5px}
+.player button{background:red;position:relative;float:right;color:white;font-weight:bold;width:20%;white-space:nowrap}
+
+.playerGame{border:1px solid black;padding:5px;display:grid;grid-template-columns:repeat(22,1fr);margin:10px 5px 5px;}
+.playerGame span{text-align:center;}
+.playerGame span:nth-child(even){border-right:1px solid black;border-left:1px dotted black;border-bottom:1px dotted black}
+.playerGame span input{max-width:30px;margin:auto;padding:0;font-size:20px;text-align:center}
+/* .playerGame input:nth-child(odd){border-right:1px solid black} */
+.playerGame p.sum{text-align:center;padding:0;grid-row:span 2;width:100px;border:none;border-left:1px solid black;font-size:35px;margin:0}
+.playerGame div{grid-column:span 2;margin:0;font-size:20px;text-align:center;height:30px;padding-top:10px}
+.playerGame div:not(:last-child){border-right:1px solid black}
+.playerGame div:last-child{grid-column:span 3}

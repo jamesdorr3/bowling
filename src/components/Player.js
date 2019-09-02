@@ -3,6 +3,10 @@ import React from 'react'
 
 export default class Player extends React.Component{
 
+  constructor(props){
+    super(props)
+  }
+
   state = {
     rolls: [''] // keep '' to not throw error
   }
@@ -17,7 +21,7 @@ export default class Player extends React.Component{
 
   createFrames = () => {
     return this.state.rolls.map( (roll,i) =>{
-      return <input id={i} key={i} name='roll' type='text' value={this.state.rolls[i]} onChange={this.handleChange} />
+      return <span className='roll' key={i}><input id={i} key={i} name='roll' type='text' value={this.state.rolls[i]} onChange={this.handleChange} onFocus={this.handleFocus} /></span>
     })
   }
 
@@ -25,7 +29,7 @@ export default class Player extends React.Component{
     const lastNumber = e.target.value[e.target.value.length -1] || '' // the '' is for delete button
     const id = parseInt(e.target.id)
     if( ((id%2===0 || id===19) && lastNumber.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
-      ( id%2===1 && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
+      ( (id%2===1 || id===20) && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
       lastNumber === ''
     ) {
         const rollsCopy = [...this.state.rolls]
@@ -34,9 +38,8 @@ export default class Player extends React.Component{
     }
   }
 
-  sumAllFrames = () => {
+  sumFrames = (nonBonusFramesCount = 20, defaultMessage = 'Start Game') => {
     const rollsAsStrings = [...this.state.rolls]
-    const rollsAsStringsWithoutNulls = rollsAsStrings.filter(x=>!!x) // WithoutNulls versions allow easy traversal for spare and strike bonus points
     const rollsAsNumbers = rollsAsStrings.map((roll,i)=>{
       if(roll.match(/[0-9]/)){return parseInt(roll)}
       else if(roll==='X'){return 10}
@@ -45,12 +48,10 @@ export default class Player extends React.Component{
     })
     const rollsAsNumbersWithoutNulls = rollsAsNumbers.filter(x=>!!x) // WithoutNulls versions allow easy traversal for spare and strike bonus points
 
-    if(rollsAsNumbersWithoutNulls.length > 0){ // otherwise this block throws an error
+    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(x=>!!x).length > 0){ // otherwise this block throws an error
 
       let extraPoints = 0
-      let frame10Length = 20
-      if(rollsAsStrings[18]==='X'){frame10Length=19}
-      rollsAsStrings.slice(0,frame10Length).filter(x=>!!x).forEach((char,i) => {
+      rollsAsStrings.slice(0,nonBonusFramesCount).filter(x=>!!x).forEach((char,i) => {
         if(char==='X'){
           extraPoints += ((rollsAsNumbersWithoutNulls[i+1] || 0) + (rollsAsNumbersWithoutNulls[i+2] || 0)) // trailing 0s prevent NaN return for incomplete game
         }else if(char==='/'){
@@ -58,24 +59,38 @@ export default class Player extends React.Component{
         }
       })
 
-      const nonBonusRolls = rollsAsNumbers.slice(0,frame10Length) // .splice(0,18) good for strike on 18, otherwise .splice(0,20)
+      const nonBonusRolls = rollsAsNumbers.slice(0,nonBonusFramesCount) // .splice(0,18) good for strike on 18, otherwise .splice(0,20)
 
       return nonBonusRolls.reduce((sum, current)=>sum+current) + extraPoints
 
-    }else{return 'Start bowling!'}
+    }else{return defaultMessage}
+  }
+
+  sumAllFrames = (message = 'Start Game') => {
+    const framesToCount = this.state.rolls[18]==='X' ? 19 : 20
+    return this.sumFrames(framesToCount, message)
+  }
+
+  handleFocus = (e) => {
+    console.log(e.target.key)
   }
 
   render(){
+    console.log(React.version)
     return(
-      <div className='player'>
-        {/* <Frame /> */}
-        {this.createFrames()}
-        <span className='sum'>
-          {this.sumAllFrames()}
-        </span>
-        {this.state.rolls.slice((this.state.rolls.length + 1) / 2).map((unused, i)=>{
-          return <div key={i} id={i}>{this.sumAllFrames()}</div>
-        })}
+      <div className="player">
+        <input value={this.props.playerName} id={this.props.id} onChange={this.props.handleNameChange} placeholder='Player Name' />
+        <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
+        <div className='playerGame'>
+          {this.createFrames()}
+          <p className='sum'>
+            {this.sumAllFrames()}
+          </p>
+          {this.state.rolls.slice((this.state.rolls.length + 1) / 2).map((unused, i)=>{
+            const sumFramesFunction = (i === 9) ? this.sumAllFrames('_') : this.sumFrames(i*2+2, '_')
+            return <div key={i} id={i}>{!!this.state.rolls[i*2] ? sumFramesFunction : '_'}</div>
+          })}
+        </div>
       </div>
     )
   }
