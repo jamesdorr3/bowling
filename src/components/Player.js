@@ -3,9 +3,9 @@ import React from 'react'
 
 export default class Player extends React.Component{
 
-  constructor(props){
-    super(props)
-  }
+  // constructor(props){
+  //   super(props)
+  // }
 
   state = {
     rolls: [''] // keep '' to not throw error
@@ -21,7 +21,12 @@ export default class Player extends React.Component{
 
   createFrames = () => {
     return this.state.rolls.map( (roll,i) =>{
-      return <span className='roll' key={i}><input id={i} key={i} name='roll' type='text' value={this.state.rolls[i]} onChange={this.handleChange} onFocus={this.handleFocus} /></span>
+      return <span className='roll' key={i}>
+        <input id={i} key={i} name='roll' type='text' value={this.state.rolls[i]} 
+        onChange={this.handleChange} onFocus={this.handleFocus} ref={span => this[`roll-${this.props.id}-${i}`] = span} 
+        disabled={(this.state.rolls[i-1]==='X' && i<19) ? true : false}
+        />
+      </span>
     })
   }
 
@@ -72,7 +77,10 @@ export default class Player extends React.Component{
   }
 
   handleFocus = (e) => {
-    console.log(e.target.key)
+    const index = parseInt(e.target.id)
+    if(index>0 && (this.state.rolls[index-2]!=='X' && !this.state.rolls[index-1])){
+      this[`roll-${this.props.id}-${index - 1}`].focus()
+    }
   }
 
   render(){
