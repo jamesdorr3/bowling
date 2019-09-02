@@ -115,11 +115,15 @@ export default class Player extends React.Component{
     }
   }
 
+  handleDelete = () => {
+    this.props.handleDeletePlayer(this.props.id)
+  }
+
   render(){
     return(
       <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
         <input value={this.props.playerName} name='nameInput' id={this.props.id} onChange={this.props.handleNameChange} placeholder='Player Name' />
-        <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
+        <button onClick={this.handleDelete}>Delete {this.props.playerName}</button>
         <div className='playerGame'>
           {this.createFrames()}
           <p className='sum'>
