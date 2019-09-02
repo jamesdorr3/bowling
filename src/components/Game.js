@@ -15,8 +15,10 @@ export default class Game extends React.Component{
 
   handleNameChange = (e) => {
     const playerNamesCopy = [...this.state.playerNames]
-    playerNamesCopy[e.target.id] = e.target.value.toUpperCase()
+    const index = parseInt(e.target.id)
+    playerNamesCopy[index] = e.target.value.toUpperCase()
     this.setState({playerNames: playerNamesCopy})
+    // document.querySelector(`#player-${index+1}`).click() // I didn't want to use it here, just wanted to test if it works
   }
 
   handleDeletePlayer = (index) => {
@@ -31,7 +33,9 @@ export default class Game extends React.Component{
         <button onClick={this.handleClick}>Add Player</button>
         {/* <div></div> */}
         {/* <input name='name' placeholder='Player Name' type='text' /> */}
-        {this.state.playerNames.map((name, i)=>< Player playerName={name} key={i} id={i} handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer} />)}
+        {this.state.playerNames.map((name, i)=>< Player playerName={name} key={i} id={i} handleNameChange={this.handleNameChange} 
+          handleDeletePlayer={this.handleDeletePlayer}
+          />)}
       </div>
     )
   }

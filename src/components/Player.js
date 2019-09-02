@@ -23,7 +23,7 @@ export default class Player extends React.Component{
     return this.state.rolls.map( (roll,i) =>{
       return <span className='roll' key={i}>
         <input id={i} key={i} name='roll' type='text' value={this.state.rolls[i]} 
-        onChange={this.handleChange} onFocus={this.handleFocus} ref={span => this[`roll-${this.props.id}-${i}`] = span} 
+        onChange={this.handleChange} onFocus={this.handleFocus} ref={input => this[`roll-${this.props.id}-${i}`] = input} 
         disabled={(this.state.rolls[i-1]==='X' && i<19) ? true : false}
         />
       </span>
@@ -34,13 +34,14 @@ export default class Player extends React.Component{
     const lastNumber = e.target.value[e.target.value.length -1] || '' // the '' is for delete button
     const id = parseInt(e.target.id)
     if( ((id%2===0 || id===19) && lastNumber.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
-      ( (id%2===1 || id===20) && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
+      ( (id%2===1) && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
       lastNumber === ''
     ) {
         const rollsCopy = [...this.state.rolls]
         rollsCopy[e.target.id] = lastNumber.toUpperCase()
         this.setState({rolls: rollsCopy})
     }
+    this.determineNextFocus(e, lastNumber)
   }
 
   sumFrames = (nonBonusFramesCount = 20, defaultMessage = 'Start Game') => {
@@ -78,16 +79,38 @@ export default class Player extends React.Component{
 
   handleFocus = (e) => {
     const index = parseInt(e.target.id)
-    if(index>0 && (this.state.rolls[index-2]!=='X' && !this.state.rolls[index-1])){
+    if(index>0 && ( (this.state.rolls[index-2]!=='X' || index===20) && !this.state.rolls[index-1])){
       this[`roll-${this.props.id}-${index - 1}`].focus()
     }
   }
 
+  directFocusToChild = (e) => {
+    console.log(e.target.id)
+    if(!e.target.name){
+      this[`roll-${this.props.id}-20`].focus()
+    }
+  }
+
+  determineNextFocus = (e, lastNumber) => {
+    const rollIndex = parseInt(e.target.id)
+    const playerIndex = parseInt(this.props.id)
+    if(rollIndex>18){this.determineNextFocusPast18(e, lastNumber)}
+    else if(rollIndex%2===1 || lastNumber.toUpperCase()==='X'){
+      const nextPlayer = document.querySelector(`#player-${playerIndex + 1}`)
+      console.log(nextPlayer)
+      if(nextPlayer){nextPlayer.click()}
+      else(document.querySelector("#player-0")).click()
+    }
+  }
+  
+  determineNextFocusPast18 = (e, lastnumber) => {
+    console.log(100)
+  }
+
   render(){
-    console.log(React.version)
     return(
-      <div className="player">
-        <input value={this.props.playerName} id={this.props.id} onChange={this.props.handleNameChange} placeholder='Player Name' />
+      <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
+        <input value={this.props.playerName} name='nameInput' id={this.props.id} onChange={this.props.handleNameChange} placeholder='Player Name' />
         <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
         <div className='playerGame'>
           {this.createFrames()}
