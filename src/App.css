@@ -23,11 +23,10 @@ input, button{font-size:15px;padding:5px;}
 .autoAdvanceContainer{background:white;color:gray;font-weight:bold;padding:10px;margin:5px 5px 5px 20px;border:1px solid black;position:relative}
 .autoAdvanceContainer p{margin:10px 20px 15px 5px}
 .autoAdvanceContainer input{height:40px;width:40px;position:absolute;z-index:1;opacity:0;right:3px;bottom:-5px}
-.autoAdvanceContainer span{height:18px;width:18px;background:white;position:relative;display:inline-block;border-radius:25px;top:2.5px}
-.autoAdvanceContainer span:nth-child(3){background:#EF2547;width:32px;transition:0.25s;border:1px solid black}
-.autoAdvanceContainer span:last-child{position:absolute;top:8.5px;right:25px;transition:0.25s}
-.autoAdvanceContainer input:checked ~ span:last-child{position:absolute;right:11px;transition:0.25s}
-.autoAdvanceContainer input:checked ~ span:not(:last-child){background:#0B773B;transition:0.25s}
+.autoAdvanceContainer span{height:18px;position:relative;display:inline-block;border-radius:25px;top:2.5px;width:32px;transition:0.25s;border:1px solid black;background: linear-gradient(to right, #0B773B 50%, #EF2547 50%);background-size: 150% 100%;background-position:left bottom;}
+.autoAdvanceContainer span span{top:-1px;right:-1px;background:white;width:18px;position:absolute;transition: 0.25s}
+.autoAdvanceContainer input:checked ~ span span{right:13px;transition:0.25s}
+.autoAdvanceContainer input:checked ~ span{background-position:right bottom;transition:0.25s}
 
 .player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white;text-align:left}
 .player input,.player button{margin:0px 5px}
