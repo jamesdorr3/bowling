@@ -62,10 +62,10 @@ export default class Game extends React.Component{
     return(
       <div className='game'>
         {this.addPlayerButton}
-        <span className='autoAdvanceContainer'>
+        <span className='autoAdvanceContainer' onClick={this.toggleAutoAdvance}>
           <p>Auto-Advance</p>
           <input type='checkbox' checked={this.state.autoAdvance} onClick={this.toggleAutoAdvance} />
-          <span/><span/>
+          <span><span/></span>
         </span>
         {this.state.players.map((player, i)=>< Player playerName={player.name} rolls={player.rolls} key={i} id={i} 
           handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
