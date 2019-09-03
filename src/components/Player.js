@@ -2,7 +2,7 @@ import React from 'react'
 
 export default class Player extends React.Component{
 
-  componentDidMount = () => {
+  componentDidMount = () => { // takes user through all nameInputs and then to the game
     // this[`name-${this.props.id}`].focus()
     this[`name-${this.props.id}`].addEventListener('keydown',e =>{
       if(e.key==="Tab" || e.key==="Enter"){
