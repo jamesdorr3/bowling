@@ -53,14 +53,17 @@ export default class Game extends React.Component{
     }
   }
 
+  addPlayerButton = <button onClick={this.handleAddPlayer} className='addPlayerButton'>Add Player</button>
+
   render(){
     return(
       <div className='game'>
-        <button onClick={this.handleAddPlayer}>Add Player</button>
+        {this.addPlayerButton}
         {this.state.players.map((player, i)=>< Player playerName={player.name} rolls={player.rolls} key={i} id={i} 
           handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
           handleUpdateRoll={this.handleUpdateRoll}
           />)}
+        {this.state.players.length > 3 ? this.addPlayerButton : null}
       </div>
     )
   }

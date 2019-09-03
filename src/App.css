@@ -1,26 +1,46 @@
-input, button{font-size:15px;padding:5px}
-.game button{background:lime;margin:5px}
+html{background-image:url(https://media.istockphoto.com/vectors/vector-bowling-seamless-pattern-color-background-and-outline-design-vector-id585607042)}
+body{background:rgba(255, 255, 255, 0.9);height:100%;margin:10px 5px 0px;padding:5px;border-radius:5px}
 
-.player{border:1px solid black;margin:5px;padding:5px}
+.App h1{text-align:center;margin:0}
+.App .instructions{background:white;border-radius:5px}
+.App h2{margin:0;display:inline}
+.App h2:after{content:': '}
+.App p{margin:0;display:inline;border-radius:5px}
+.App table{border-collapse:collapse}
+.App table th{padding:5px}
+.App table td{padding: 0px 5px;vertical-align:top;text-align:left}
+.App table td:nth-child(2){text-align:center}
+td,th{border:1px solid black}
+/* th:not(:last-child),td:not(:last-child){border-right:1px solid black}
+tr{} */
+
+input, button{font-size:15px;padding:5px;}
+.game button.addPlayerButton{background:lime;margin:5px;padding:10px;font-weight:bold}
+* button{border-radius:3px;box-shadow:4px 4px 5px gray;}
+* button:hover{border-radius:3px;box-shadow:2px 2px 4px gray;}
+
+.player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white}
 .player input,.player button{margin:0px 5px}
+.player input{box-shadow:inset 0.5px 0.5px 0.5px gray;}
 .player button{background:red;position:relative;float:right;color:white;font-weight:bold;width:20%;white-space:nowrap}
 
-.playerGame{border:1px solid black;padding:0;display:grid;grid-template-columns:repeat(22,1fr);margin:10px 5px 5px;}
+.playerGame{border:1px solid black;padding:0;display:grid;grid-template-columns:repeat(22,1fr);margin:10px 5px 5px;height:90px;border-radius:3px;overflow:hidden}
 .playerGame span{text-align:center;}
 .playerGame span:nth-child(even){border-right:1px solid black;border-left:1px dashed black;border-bottom:1px dashed black}
-.playerGame span input{width:90%;height:85%;margin:auto;padding:0;font-size:20px;text-align:center}
-.playerGame p.sum{text-align:center;padding:0;grid-row:span 2;width:100px;border:none;border-left:1px solid black;font-size:35px;margin:0}
-.playerGame div{grid-column:span 2;margin:0;font-size:20px;text-align:center;height:30px;padding-top:10px}
+.playerGame span input{width:90%;height:85%;margin:auto;padding:0;font-size:20px;text-align:center;box-shadow:inset 0.5px 0.5px 0.5px gray}
+.playerGame p.sum{text-align:center;padding:0;grid-row:span 2;width:100px;border:none;font-size:35px;margin:auto}
+.playerGame span:nth-child(21),.playerGame div:last-child{border-right:1px solid black}
+.playerGame div{grid-column:span 2;margin:0;font-size:20px;text-align:center;padding-top:10px}
 .playerGame div:not(:last-child){border-right:1px solid black}
 .playerGame div:last-child{grid-column:span 3}
 
 @media only screen and (max-width:750px){
   .game button,.player button{font-size:10px}
 
-  .player{padding:1px;margin:1px 1px 5px}
-  .player input.nameInput{background:pink;font-size:10px}
+  .player{padding:1px;margin:1px 1px 5px;box-shadow:none}
+  .player input.nameInput{font-size:10px;border:1px solid lightgray}
 
-  .playerGame{margin:1px;}
+  .playerGame{margin:1px;height:auto}
   .playerGame p.sum{font-size:14px;width:40px}
   .playerGame span.roll{border:none;}
   .playerGame span.roll:nth-child(even){border-right:1px solid black}
