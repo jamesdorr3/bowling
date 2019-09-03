@@ -26,7 +26,7 @@ export default class Player extends React.Component{
         <input id={`roll-${this.id(i)}`} key={this.id(i)} name='roll' type='text' value={this.props.rolls[i]} 
         onChange={this.handleUpdateRoll} ref={input => this[`roll-${this.id(i)}`] = input} 
         // disabled={( (this.props.rolls[i-1]==='X' && i<19)) ? true : false} 
-        placeholder={this.id(i)}
+        // placeholder={this.id(i)}
         />
       </span>
     })
@@ -34,7 +34,9 @@ export default class Player extends React.Component{
 
   handleUpdateRoll = (e) => {
     this.props.handleUpdateRoll(e)
-    this.determineNextFocus(e, e.target.value.toUpperCase())
+    if(this.props.autoAdvance){
+      this.determineNextFocus(e, e.target.value.toUpperCase())
+    }
   }
 
   sumFrames = (nonBonusFramesCount = 20, message = 'Start Game') => {
@@ -82,8 +84,12 @@ export default class Player extends React.Component{
       })
       rolls = rolls.filter((roll, i) => roll || rolls[i+1])
       const lastNumber = rolls[rolls.length-1]
-      let nextRollIndex = (lastNumber && lastNumber.match(/X/i)) ? rolls.length + 1 : rolls.length
-      if(nextRollIndex>20){nextRollIndex=20}
+      let nextRollIndex;
+      if(rolls.length >= 20){ nextRollIndex = 20 }
+      else if(lastNumber && lastNumber.match(/X/i)){ nextRollIndex = rolls.length + 1 }
+      else{ nextRollIndex = rolls.length}
+      // // let nextRollIndex = (lastNumber && lastNumber.match(/X/i)) ? rolls.length + 1 : rolls.length
+      // if(nextRollIndex>20){nextRollIndex=20}
 
       this[`roll-${this.props.id}-${nextRollIndex}`].focus()
     }
@@ -96,12 +102,10 @@ export default class Player extends React.Component{
     const playerIndex = parseInt(ids[1])
     if(rollIndex>=18){this.determineNextFocusLastFrame(e, lastNumber)}
     else if(rollIndex%2===1 || lastNumber.toUpperCase()==='X'){
-      console.log(114)
       const nextPlayer = document.querySelector(`#player-${playerIndex + 1}`)
       if(nextPlayer){nextPlayer.click()}
       else(document.querySelector("#player-0").click())
     }else{
-      console.log('next roll')
       this[`roll-${playerIndex}-${rollIndex+1}`].focus()
     }
   }
@@ -133,8 +137,8 @@ export default class Player extends React.Component{
             {this.sumAllFrames()}
           </p>
           {this.props.rolls.slice((this.props.rolls.length + 1) / 2).map((unused, i)=>{
-            const sumFramesFunction = (i === 9) ? this.sumAllFrames('_') : this.sumFrames(i*2+2, '_')
-            return <div key={i} id={i}>{!!this.props.rolls[i*2] ? sumFramesFunction : '_'}</div>
+            const sumFramesFunction = (i === 9) ? this.sumAllFrames('-') : this.sumFrames(i*2+2, '-')
+            return <div key={i} id={i}>{!!this.props.rolls[i*2] ? sumFramesFunction : '-'}</div>
           })}
         </div>
       </div>
