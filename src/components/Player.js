@@ -34,7 +34,9 @@ export default class Player extends React.Component{
 
   handleUpdateRoll = (e) => {
     this.props.handleUpdateRoll(e)
-    this.determineNextFocus(e, e.target.value.toUpperCase())
+    if(this.props.autoAdvance){
+      this.determineNextFocus(e, e.target.value.toUpperCase())
+    }
   }
 
   sumFrames = (nonBonusFramesCount = 20, message = 'Start Game') => {

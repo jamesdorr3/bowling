@@ -1,13 +1,14 @@
 html{background-image:url(https://media.istockphoto.com/vectors/vector-bowling-seamless-pattern-color-background-and-outline-design-vector-id585607042)}
 body{background:rgba(255, 255, 255, 0.9);height:100%;margin:10px 5px 0px;padding:5px;border-radius:5px}
 
+.App{text-align:center}
 .App h1{text-align:center;margin:0}
-.App .instructions{background:white;border-radius:5px}
+.App .instructions{background:white;border-radius:5px;display:inline-block;text-align:left}
 .App h2{margin:0;display:inline}
 .App h2:after{content:': '}
 .App p{margin:0;display:inline;border-radius:5px}
 .App table{border-collapse:collapse}
-.App table th{padding:5px}
+.App table th{padding:5px;text-align:center}
 .App table td{padding: 0px 5px;vertical-align:top;text-align:left}
 .App table td:nth-child(2){text-align:center}
 td,th{border:1px solid black}
@@ -15,14 +16,23 @@ td,th{border:1px solid black}
 tr{} */
 
 input, button{font-size:15px;padding:5px;}
-.game button.addPlayerButton{background:lime;margin:5px;padding:10px;font-weight:bold}
-* button{border-radius:3px;box-shadow:4px 4px 5px gray;}
-* button:hover{border-radius:3px;box-shadow:2px 2px 4px gray;}
+.game button.addPlayerButton{background:#0B773B;color:white;margin:5px;padding:10px;font-weight:bold}
+* button,.autoAdvanceContainer{border-radius:3px;box-shadow:4px 4px 5px gray;}
+* button:hover,.autoAdvanceContainer:hover{border-radius:3px;box-shadow:2px 2px 4px gray;}
 
-.player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white}
+.autoAdvanceContainer{background:white;color:gray;font-weight:bold;padding:10px;margin:5px 5px 5px 20px;border:1px solid black;position:relative}
+.autoAdvanceContainer p{margin:10px 20px 15px 5px}
+.autoAdvanceContainer input{height:40px;width:40px;position:absolute;z-index:1;opacity:0;right:3px;bottom:-5px}
+.autoAdvanceContainer span{height:18px;width:18px;background:white;position:relative;display:inline-block;border-radius:25px;top:2.5px}
+.autoAdvanceContainer span:nth-child(3){background:#EF2547;width:32px;transition:0.25s;border:1px solid black}
+.autoAdvanceContainer span:last-child{position:absolute;top:8.5px;right:25px;transition:0.25s}
+.autoAdvanceContainer input:checked ~ span:last-child{position:absolute;right:11px;transition:0.25s}
+.autoAdvanceContainer input:checked ~ span:not(:last-child){background:#0B773B;transition:0.25s}
+
+.player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white;text-align:left}
 .player input,.player button{margin:0px 5px}
 .player input{box-shadow:inset 0.5px 0.5px 0.5px gray;}
-.player button{background:red;position:relative;float:right;color:white;font-weight:bold;width:20%;white-space:nowrap}
+.player button{background:#EF2547;position:relative;float:right;color:white;font-weight:bold;width:20%;white-space:nowrap}
 
 .playerGame{border:1px solid black;padding:0;display:grid;grid-template-columns:repeat(22,1fr);margin:10px 5px 5px;height:90px;border-radius:3px;overflow:hidden}
 .playerGame span{text-align:center;}
@@ -35,12 +45,15 @@ input, button{font-size:15px;padding:5px;}
 .playerGame div:last-child{grid-column:span 3}
 
 @media only screen and (max-width:750px){
-  .game button,.player button{font-size:10px}
+  .game button,.player button,.autoAdvanceContainer{font-size:12px;box-shadow:2px 2px 4px gray;margin-bottom:2px}
+
+  .autoAdvanceContainer span:nth-child(3){top:5px}
+  .autoAdvanceContainer span:last-child{top:8px}
 
   .player{padding:1px;margin:1px 1px 5px;box-shadow:none}
-  .player input.nameInput{font-size:10px;border:1px solid lightgray}
+  .player input.nameInput{font-size:10px;border:1px solid lightgray;margin:1px}
 
-  .playerGame{margin:1px;height:auto}
+  .playerGame{margin:1px;height:auto;width:100%}
   .playerGame p.sum{font-size:14px;width:40px}
   .playerGame span.roll{border:none;}
   .playerGame span.roll:nth-child(even){border-right:1px solid black}

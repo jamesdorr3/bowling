@@ -16,7 +16,8 @@ export default class Game extends React.Component{
   state = {
     players: [
       _.cloneDeep(this.newPlayer)
-    ]
+    ],
+    autoAdvance: true
   }
 
   handleAddPlayer = () => {
@@ -55,13 +56,20 @@ export default class Game extends React.Component{
 
   addPlayerButton = <button onClick={this.handleAddPlayer} className='addPlayerButton'>Add Player</button>
 
+  toggleAutoAdvance = () => this.setState({autoAdvance: !this.state.autoAdvance})
+
   render(){
     return(
       <div className='game'>
         {this.addPlayerButton}
+        <span className='autoAdvanceContainer'>
+          <p>Auto-Advance</p>
+          <input type='checkbox' checked={this.state.autoAdvance} onClick={this.toggleAutoAdvance} />
+          <span/><span/>
+        </span>
         {this.state.players.map((player, i)=>< Player playerName={player.name} rolls={player.rolls} key={i} id={i} 
           handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
-          handleUpdateRoll={this.handleUpdateRoll}
+          handleUpdateRoll={this.handleUpdateRoll} autoAdvance={this.state.autoAdvance}
           />)}
         {this.state.players.length > 3 ? this.addPlayerButton : null}
       </div>
