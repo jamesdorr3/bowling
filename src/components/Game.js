@@ -26,7 +26,7 @@ export default class Game extends React.Component{
   }
 
   handleNameChange = (e) => {
-    const index = parseInt(e.target.id)
+    const index = parseInt(e.target.id.split('-')[1])
     const playersCopy = _.cloneDeep(this.state.players) // deep copy needed
     playersCopy[index].name = e.target.value.toUpperCase()
     this.setState({players: playersCopy})
@@ -41,8 +41,8 @@ export default class Game extends React.Component{
   handleUpdateRoll = (e) => { // keyDown eventListeners don't work on Android
     const lastNumber = e.target.value[e.target.value.length -1] || '' // the '' is for delete button
     const id = e.target.id.split('-')
-    const playerIndex = parseInt(id[0])
-    const rollIndex = parseInt(id[1])
+    const playerIndex = parseInt(id[1])
+    const rollIndex = parseInt(id[2])
     if( ((rollIndex%2===0 || rollIndex===19) && lastNumber.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
       ( (rollIndex%2===1) && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
       lastNumber === ''
@@ -51,16 +51,12 @@ export default class Game extends React.Component{
       playersCopy[playerIndex].rolls[rollIndex] = lastNumber.toUpperCase()
       this.setState({players: playersCopy})
     }
-    // this.determineNextFocus(e, lastNumber)
   }
 
   render(){
-    console.log(React.version)
     return(
       <div className='game'>
         <button onClick={this.handleAddPlayer}>Add Player</button>
-        {/* <div></div> */}
-        {/* <input name='name' placeholder='Player Name' type='text' /> */}
         {this.state.players.map((player, i)=>< Player playerName={player.name} rolls={player.rolls} key={i} id={i} 
           handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
           handleUpdateRoll={this.handleUpdateRoll}

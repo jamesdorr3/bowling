@@ -7,7 +7,7 @@ input, button{font-size:15px;padding:5px}
 
 .playerGame{border:1px solid black;padding:0;display:grid;grid-template-columns:repeat(22,1fr);margin:10px 5px 5px;}
 .playerGame span{text-align:center;}
-.playerGame span:nth-child(even){border-right:1px solid black;border-left:1px dotted black;border-bottom:1px dotted black}
+.playerGame span:nth-child(even){border-right:1px solid black;border-left:1px dashed black;border-bottom:1px dashed black}
 .playerGame span input{width:90%;height:85%;margin:auto;padding:0;font-size:20px;text-align:center}
 .playerGame p.sum{text-align:center;padding:0;grid-row:span 2;width:100px;border:none;border-left:1px solid black;font-size:35px;margin:0}
 .playerGame div{grid-column:span 2;margin:0;font-size:20px;text-align:center;height:30px;padding-top:10px}
@@ -15,12 +15,16 @@ input, button{font-size:15px;padding:5px}
 .playerGame div:last-child{grid-column:span 3}
 
 @media only screen and (max-width:750px){
-  .player{padding:1px;margin:1px 1px 5px}
+  .game button,.player button{font-size:10px}
 
+  .player{padding:1px;margin:1px 1px 5px}
+  .player input.nameInput{background:pink;font-size:10px}
+
+  .playerGame{margin:1px;}
   .playerGame p.sum{font-size:14px;width:40px}
-  .playerGame span.roll{border:none}
+  .playerGame span.roll{border:none;}
   .playerGame span.roll:nth-child(even){border-right:1px solid black}
   .playerGame span.roll:nth-child(20){border-right:none}
-  .playerGame span.roll input{font-size:10px;height:20px;width:75%;border:0.5px solid gray}
+  .playerGame span.roll input{font-size:10px;height:20px;width:95%;border:0.5px solid gray;position:relative;bottom:1px}
   .playerGame div{font-size:12px;height:10px;padding:5px}
 }
