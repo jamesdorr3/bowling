@@ -3,7 +3,7 @@ import React from 'react'
 export default class Player extends React.Component{
 
   componentDidMount = () => {
-    this[`name-${this.props.id}`].focus()
+    // this[`name-${this.props.id}`].focus()
     this[`name-${this.props.id}`].addEventListener('keydown',e =>{
       if(e.key==="Tab" || e.key==="Enter"){
         e.preventDefault()
@@ -78,7 +78,7 @@ export default class Player extends React.Component{
     if(rolls.length===21){
       rolls = rolls.map((roll,i)=>{
         if( ((i%2===0 || i===19) && roll.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
-        (i%2===1) && roll.match(/[0-9/]/) // 2nd throws/rolls of each frames can have spares / but not strikes X
+        ((i%2===1) && roll.match(/[0-9/]/)) // 2nd throws/rolls of each frames can have spares / but not strikes X
       ){return roll}
       else{return ''}
       })
@@ -129,8 +129,10 @@ export default class Player extends React.Component{
       <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
         <input value={this.props.playerName} name='nameInput' id={`name-${this.props.id}`} className='nameInput'
         onChange={this.props.handleNameChange} placeholder='Player Name' ref={input => this[`name-${this.props.id}`] = input} 
+        autoFocus
         />
         <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
+        <button className='clearScoreButton' onClick={() => this.props.clearScore(this.props.id)}>Clear Score</button>
         <div className='playerGame'>
           {this.createFrames()}
           <p className='sum'>

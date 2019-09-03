@@ -11,6 +11,7 @@ function App() {
         <h2>Scoring Rules</h2>
         <p>Each "frame" is two attempts ("throws") to knock down the 10 pins. A game has 10 frames.</p>
         <table>
+        <tbody>
           <tr>
             <th>Name</th><th>Symbol</th><th>Meaning</th><th>Scoring</th>
           </tr>
@@ -23,6 +24,7 @@ function App() {
           <tr>
             <td></td><td>0-9</td><td>You knocked down this many pins, <b>not</b> all the pins</td><td>The number of pins you knocked down</td>
           </tr>
+        </tbody>
         </table>
       </div>
       <Game />
