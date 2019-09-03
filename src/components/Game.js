@@ -62,7 +62,7 @@ export default class Game extends React.Component{
     return(
       <div className='game'>
         {this.addPlayerButton}
-        <span className='autoAdvanceContainer'>
+        <span className='autoAdvanceContainer' onClick={this.toggleAutoAdvance}>
           <p>Auto-Advance</p>
           <input type='checkbox' checked={this.state.autoAdvance} onClick={this.toggleAutoAdvance} />
           <span><span/></span>
