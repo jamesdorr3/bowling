@@ -47,12 +47,12 @@ export default class Player extends React.Component{
       else if(roll==='/'){return (10 - parseInt(rollsAsStrings[i-1]))}
       else{return null}
     })
-    const rollsAsNumbersWithoutNulls = rollsAsNumbers.filter(x=>!!x) // WithoutNulls versions allow easy traversal for spare and strike bonus points
+    const rollsAsNumbersWithoutNulls = rollsAsNumbers.filter(filterOutNulls) // WithoutNulls versions allow easy traversal for spare and strike bonus points
 
-    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(x=>!!x).length > 0){ // otherwise this block throws an error
+    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(filterOutNulls).length > 0){ // otherwise this block throws an error
 
-      let extraPoints = 0
-      rollsAsStrings.slice(0,nonBonusFramesCount).filter(x=>!!x).forEach((char,i) => {
+      let extraPoints = 0 // ISSUE! Doesn't count 0 / or X as extras
+      rollsAsStrings.slice(0,nonBonusFramesCount).filter(filterOutNulls).forEach((char,i) => {
         if(char==='X'){
           extraPoints += ((rollsAsNumbersWithoutNulls[i+1] || 0) + (rollsAsNumbersWithoutNulls[i+2] || 0)) // trailing 0s prevent NaN return for incomplete game
         }else if(char==='/'){
@@ -61,10 +61,13 @@ export default class Player extends React.Component{
       })
 
       const nonBonusRolls = rollsAsNumbers.slice(0,nonBonusFramesCount) // .splice(0,18) good for strike on 18, otherwise .splice(0,20)
-
       return nonBonusRolls.reduce((sum, current)=>sum+current) + extraPoints
 
     }else{return message}
+
+    function filterOutNulls(char){
+      return !!char || char===0
+    }
   }
 
   sumAllFrames = (message = 'Start Game') => {
