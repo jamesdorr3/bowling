@@ -131,7 +131,7 @@ export default class Player extends React.Component{
     return(
       <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
         <input value={this.props.playerName} name='nameInput' id={`name-${this.props.id}`} className='nameInput'
-        onChange={this.props.handleNameChange} placeholder='Player Name' ref={input => this[`name-${this.props.id}`] = input} 
+        onChange={this.props.handleNameChange} placeholder={`Player ${this.props.id+1}`} ref={input => this[`name-${this.props.id}`] = input} 
         autoFocus
         />
         <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
