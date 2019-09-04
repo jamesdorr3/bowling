@@ -1,4 +1,5 @@
 import React from 'react'
+// import {URL, HEADERS} from '../constants'
 
 export default class Player extends React.Component{
 
@@ -18,9 +19,9 @@ export default class Player extends React.Component{
     })
   }
 
-  id = (index) => `${this.props.id}-${index}`
+  id = (index) => `${this.props.id}-${index}` // important for good .focus()
 
-  createFrames = () => {
+  createFrames = () => { // makes input (wrapped in span) for each throw/roll
     return this.props.rolls.map( (roll,i) =>{
       return <span className='roll' key={this.id(i)}>
         <input id={`roll-${this.id(i)}`} key={this.id(i)} name='roll' type='text' value={this.props.rolls[i]} 
@@ -45,13 +46,13 @@ export default class Player extends React.Component{
       if(roll.match(/[0-9]/)){return parseInt(roll)}
       else if(roll==='X'){return 10}
       else if(roll==='/'){return (10 - parseInt(rollsAsStrings[i-1]))}
-      else{return null}
+      else{return null} // removes other characters
     })
     const rollsAsNumbersWithoutNulls = rollsAsNumbers.filter(filterOutNulls) // WithoutNulls versions allow easy traversal for spare and strike bonus points
 
-    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(filterOutNulls).length > 0){ // otherwise this block throws an error
+    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(filterOutNulls).length > 0){ 
 
-      let extraPoints = 0 // ISSUE! Doesn't count 0 / or X as extras
+      let extraPoints = 0 
       rollsAsStrings.slice(0,nonBonusFramesCount).filter(filterOutNulls).forEach((char,i) => {
         if(char==='X'){
           extraPoints += ((rollsAsNumbersWithoutNulls[i+1] || 0) + (rollsAsNumbersWithoutNulls[i+2] || 0)) // trailing 0s prevent NaN return for incomplete game
@@ -127,6 +128,27 @@ export default class Player extends React.Component{
     }
   }
 
+  // isGameFinished = () => {
+  //   const rolls = this.props.rolls
+  //   return (
+  //     rolls[20] || (rolls[19] && rolls[19]!=='/' &&
+  //     rolls[18] && rolls[18]!=='X')
+  //   )
+  // }
+
+  // saveGame = () => {
+  //   fetch(`${URL}/bowling`,{
+  //     method: 'POST',
+  //     headers: HEADERS,
+  //     body: JSON.stringify({
+  //       name: 'James',
+  //       total: '100'
+  //     })
+  //   })
+  //   .then(r => r.json())
+  //   .then(r => console.log(r))
+  // }
+
   render(){
     return(
       <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
@@ -138,9 +160,10 @@ export default class Player extends React.Component{
         <button className='clearScoreButton' onClick={() => this.props.clearScore(this.props.id)}>Clear Score</button>
         <div className='playerGame'>
           {this.createFrames()}
-          <p className='sum'>
-            {this.sumAllFrames()}
-          </p>
+          <span className='sum'>
+            <p>{this.sumAllFrames()}</p>
+            {/* {this.isGameFinished() ? <button onClick={this.saveGame}>Save Game</button> : null } */}
+          </span>
           {this.props.rolls.slice((this.props.rolls.length + 1) / 2).map((unused, i)=>{
             const sumFramesFunction = (i === 9) ? this.sumAllFrames('-') : this.sumFrames(i*2+2, '-')
             return <div key={i} id={i}>{!!this.props.rolls[i*2] ? sumFramesFunction : '-'}</div>
