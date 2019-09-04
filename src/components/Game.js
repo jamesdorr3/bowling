@@ -11,25 +11,26 @@ export default class Game extends React.Component{
     return [...rolls]
   }
 
-  newPlayer = {name:'',rolls:this.makeAllRolls()}
+  newPlayer = (name = '') => ({name:name,rolls:this.makeAllRolls()})
 
   state = {
     players: [
-      _.cloneDeep(this.newPlayer)
+      _.cloneDeep(this.newPlayer('Tejal')),
+      _.cloneDeep(this.newPlayer('Nick'))
     ],
     autoAdvance: true
   }
 
   handleAddPlayer = () => {
     const playersCopy = [...this.state.players] // only shallow copy needed
-    playersCopy.push(_.cloneDeep(this.newPlayer))
+    playersCopy.push(_.cloneDeep(this.newPlayer()))
     this.setState({players: playersCopy})
   }
 
   handleNameChange = (e) => {
     const index = parseInt(e.target.id.split('-')[1])
     const playersCopy = _.cloneDeep(this.state.players) // deep copy needed
-    playersCopy[index].name = e.target.value.toUpperCase()
+    playersCopy[index].name = e.target.value
     this.setState({players: playersCopy})
   }
 
@@ -58,18 +59,25 @@ export default class Game extends React.Component{
 
   toggleAutoAdvance = () => this.setState({autoAdvance: !this.state.autoAdvance})
 
+  clearScore = (playerIndex) => {
+    const playersCopy = _.cloneDeep(this.state.players)
+    playersCopy[playerIndex].rolls = this.makeAllRolls()
+    this.setState({players: playersCopy})
+  }
+
   render(){
     return(
       <div className='game'>
         {this.addPlayerButton}
         <span className='autoAdvanceContainer' onClick={this.toggleAutoAdvance}>
           <p>Auto-Advance</p>
-          <input type='checkbox' checked={this.state.autoAdvance} onClick={this.toggleAutoAdvance} />
+          <input type='checkbox' checked={this.state.autoAdvance} onChange={this.toggleAutoAdvance} />
           <span><span/></span>
         </span>
         {this.state.players.map((player, i)=>< Player playerName={player.name} rolls={player.rolls} key={i} id={i} 
           handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
           handleUpdateRoll={this.handleUpdateRoll} autoAdvance={this.state.autoAdvance}
+          clearScore={this.clearScore}
           />)}
         {this.state.players.length > 3 ? this.addPlayerButton : null}
       </div>

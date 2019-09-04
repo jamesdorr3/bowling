@@ -2,8 +2,8 @@ import React from 'react'
 
 export default class Player extends React.Component{
 
-  componentDidMount = () => {
-    this[`name-${this.props.id}`].focus()
+  componentDidMount = () => { // takes user through all nameInputs and then to the game
+    // this[`name-${this.props.id}`].focus()
     this[`name-${this.props.id}`].addEventListener('keydown',e =>{
       if(e.key==="Tab" || e.key==="Enter"){
         e.preventDefault()
@@ -47,12 +47,12 @@ export default class Player extends React.Component{
       else if(roll==='/'){return (10 - parseInt(rollsAsStrings[i-1]))}
       else{return null}
     })
-    const rollsAsNumbersWithoutNulls = rollsAsNumbers.filter(x=>!!x) // WithoutNulls versions allow easy traversal for spare and strike bonus points
+    const rollsAsNumbersWithoutNulls = rollsAsNumbers.filter(filterOutNulls) // WithoutNulls versions allow easy traversal for spare and strike bonus points
 
-    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(x=>!!x).length > 0){ // otherwise this block throws an error
+    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(filterOutNulls).length > 0){ // otherwise this block throws an error
 
-      let extraPoints = 0
-      rollsAsStrings.slice(0,nonBonusFramesCount).filter(x=>!!x).forEach((char,i) => {
+      let extraPoints = 0 // ISSUE! Doesn't count 0 / or X as extras
+      rollsAsStrings.slice(0,nonBonusFramesCount).filter(filterOutNulls).forEach((char,i) => {
         if(char==='X'){
           extraPoints += ((rollsAsNumbersWithoutNulls[i+1] || 0) + (rollsAsNumbersWithoutNulls[i+2] || 0)) // trailing 0s prevent NaN return for incomplete game
         }else if(char==='/'){
@@ -61,10 +61,13 @@ export default class Player extends React.Component{
       })
 
       const nonBonusRolls = rollsAsNumbers.slice(0,nonBonusFramesCount) // .splice(0,18) good for strike on 18, otherwise .splice(0,20)
-
       return nonBonusRolls.reduce((sum, current)=>sum+current) + extraPoints
 
     }else{return message}
+
+    function filterOutNulls(char){
+      return !!char || char===0
+    }
   }
 
   sumAllFrames = (message = 'Start Game') => {
@@ -78,7 +81,7 @@ export default class Player extends React.Component{
     if(rolls.length===21){
       rolls = rolls.map((roll,i)=>{
         if( ((i%2===0 || i===19) && roll.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
-        (i%2===1) && roll.match(/[0-9/]/) // 2nd throws/rolls of each frames can have spares / but not strikes X
+        ((i%2===1) && roll.match(/[0-9/]/)) // 2nd throws/rolls of each frames can have spares / but not strikes X
       ){return roll}
       else{return ''}
       })
@@ -129,8 +132,10 @@ export default class Player extends React.Component{
       <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
         <input value={this.props.playerName} name='nameInput' id={`name-${this.props.id}`} className='nameInput'
         onChange={this.props.handleNameChange} placeholder='Player Name' ref={input => this[`name-${this.props.id}`] = input} 
+        autoFocus
         />
         <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
+        <button className='clearScoreButton' onClick={() => this.props.clearScore(this.props.id)}>Clear Score</button>
         <div className='playerGame'>
           {this.createFrames()}
           <p className='sum'>

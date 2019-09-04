@@ -15,24 +15,26 @@ td,th{border:1px solid black}
 /* th:not(:last-child),td:not(:last-child){border-right:1px solid black}
 tr{} */
 
-input, button{font-size:15px;padding:5px;}
+input, button{font-size:15px;padding:5px 10px;overflow:hidden;}
 .game button.addPlayerButton{background:#42A5E0;color:white;margin:5px;padding:10px;font-weight:bold}
-* button,.autoAdvanceContainer{border-radius:3px;box-shadow:4px 4px 5px gray;}
-* button:hover,.autoAdvanceContainer:hover{border-radius:3px;box-shadow:2px 2px 4px gray;}
+* button,.autoAdvanceContainer{border-radius:3px;box-shadow:3px 3px 5px gray;border:1px solid black}
+* button:hover,.autoAdvanceContainer:hover{box-shadow:2px 2px 4px gray;}
 
-.autoAdvanceContainer{background:white;color:gray;font-weight:bold;padding:10px;margin:5px 5px 5px 20px;border:1px solid black;position:relative;cursor:default}
-.autoAdvanceContainer p{margin:10px 20px 15px 5px}
+.autoAdvanceContainer{background:white;color:black;font-weight:bold;padding:10px;margin:5px 5px 5px 20px;padding:5px;position:relative;cursor:default;user-select:none;border-radius:25px}
+.autoAdvanceContainer p{margin:10px 10px 10px 5px}
 .autoAdvanceContainer input{height:40px;width:40px;position:absolute;z-index:1;opacity:0;right:3px;bottom:-5px}
 
-.autoAdvanceContainer span{height:18px;position:relative;display:inline-block;border-radius:25px;top:2.5px;width:32px;transition:0.25s;border:1px solid black;background: linear-gradient(to right, #0B773B 50%, #EF2547 50%);background-size: 150% 100%;background-position:right bottom;}
+.autoAdvanceContainer span{height:18px;position:relative;display:inline-block;border-radius:25px;top:2.5px;width:32px;transition:0.25s;border:1px solid black;background: linear-gradient(to right, #42A5E0 50%, #EF2547 50%);background-size: 150% 100%;background-position:right bottom;}
 .autoAdvanceContainer span span{top:-1px;right:13px;background:white;width:18px;position:absolute;transition: 0.25s}
 .autoAdvanceContainer input:checked ~ span span{right:-1px;transition:0.25s}
 .autoAdvanceContainer input:checked ~ span{background-position:left bottom;transition:0.25s}
 
 .player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white;text-align:left}
 .player input,.player button{margin:0px 5px}
+.player input.nameInput{width:300px;max-width:30%}
 .player input{box-shadow:inset 0.5px 0.5px 0.5px gray;}
-.player button{background:#EF2547;position:relative;float:right;color:white;font-weight:bold;width:20%;white-space:nowrap}
+.player button{background:#EF2547;position:relative;float:right;color:white;font-weight:bold;width:25%;max-width:350px;white-space:nowrap}
+.player button.clearScoreButton{background:#F8AF19;width:auto;}
 
 .playerGame{border:1px solid black;padding:0;display:grid;grid-template-columns:repeat(22,1fr);margin:10px 5px 5px;height:90px;border-radius:3px;overflow:hidden}
 .playerGame span{text-align:center;}
@@ -46,6 +48,7 @@ input, button{font-size:15px;padding:5px;}
 
 @media only screen and (max-width:750px){
   .game button,.player button,.autoAdvanceContainer{font-size:12px;box-shadow:2px 2px 4px gray;margin-bottom:2px}
+
   h1{font-size:30px}
   h2{font-size:20px}
   .instructions p{font-size:13px}
