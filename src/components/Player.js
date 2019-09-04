@@ -19,9 +19,9 @@ export default class Player extends React.Component{
     })
   }
 
-  id = (index) => `${this.props.id}-${index}`
+  id = (index) => `${this.props.id}-${index}` // important for good .focus()
 
-  createFrames = () => {
+  createFrames = () => { // makes input (wrapped in span) for each throw/roll
     return this.props.rolls.map( (roll,i) =>{
       return <span className='roll' key={this.id(i)}>
         <input id={`roll-${this.id(i)}`} key={this.id(i)} name='roll' type='text' value={this.props.rolls[i]} 
@@ -46,13 +46,13 @@ export default class Player extends React.Component{
       if(roll.match(/[0-9]/)){return parseInt(roll)}
       else if(roll==='X'){return 10}
       else if(roll==='/'){return (10 - parseInt(rollsAsStrings[i-1]))}
-      else{return null}
+      else{return null} // removes other characters
     })
     const rollsAsNumbersWithoutNulls = rollsAsNumbers.filter(filterOutNulls) // WithoutNulls versions allow easy traversal for spare and strike bonus points
 
-    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(filterOutNulls).length > 0){ // otherwise this block throws an error
+    if(rollsAsNumbers.slice(0,nonBonusFramesCount).filter(filterOutNulls).length > 0){ 
 
-      let extraPoints = 0 // ISSUE! Doesn't count 0 / or X as extras
+      let extraPoints = 0 
       rollsAsStrings.slice(0,nonBonusFramesCount).filter(filterOutNulls).forEach((char,i) => {
         if(char==='X'){
           extraPoints += ((rollsAsNumbersWithoutNulls[i+1] || 0) + (rollsAsNumbersWithoutNulls[i+2] || 0)) // trailing 0s prevent NaN return for incomplete game

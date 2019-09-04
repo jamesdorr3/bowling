@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 export default class Game extends React.Component{
 
-  makeAllRolls = () => {
+  makeAllRolls = () => { // makes all possible throws,all are ''
     const rolls = []
     for(let i=0;i<(10*2)+1;i++){ rolls.push('') } // 10 frames of 2 throws/rolls max, plus 2 extra at the end
     return [...rolls]
@@ -52,6 +52,7 @@ export default class Game extends React.Component{
     this.setState({players: playersCopy})
   }
 
+  // updates a throw by number to the number of pins knocked down, or x or /
   handleUpdateRoll = (e) => { // keyDown eventListeners don't work on Android
     const lastNumber = e.target.value[e.target.value.length -1] || '' // the '' is for delete button
     const id = e.target.id.split('-')
