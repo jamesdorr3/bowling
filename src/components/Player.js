@@ -1,4 +1,5 @@
 import React from 'react'
+// import {URL, HEADERS} from '../constants'
 
 export default class Player extends React.Component{
 
@@ -127,6 +128,27 @@ export default class Player extends React.Component{
     }
   }
 
+  // isGameFinished = () => {
+  //   const rolls = this.props.rolls
+  //   return (
+  //     rolls[20] || (rolls[19] && rolls[19]!=='/' &&
+  //     rolls[18] && rolls[18]!=='X')
+  //   )
+  // }
+
+  // saveGame = () => {
+  //   fetch(`${URL}/bowling`,{
+  //     method: 'POST',
+  //     headers: HEADERS,
+  //     body: JSON.stringify({
+  //       name: 'James',
+  //       total: '100'
+  //     })
+  //   })
+  //   .then(r => r.json())
+  //   .then(r => console.log(r))
+  // }
+
   render(){
     return(
       <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
@@ -138,9 +160,10 @@ export default class Player extends React.Component{
         <button className='clearScoreButton' onClick={() => this.props.clearScore(this.props.id)}>Clear Score</button>
         <div className='playerGame'>
           {this.createFrames()}
-          <p className='sum'>
-            {this.sumAllFrames()}
-          </p>
+          <span className='sum'>
+            <p>{this.sumAllFrames()}</p>
+            {/* {this.isGameFinished() ? <button onClick={this.saveGame}>Save Game</button> : null } */}
+          </span>
           {this.props.rolls.slice((this.props.rolls.length + 1) / 2).map((unused, i)=>{
             const sumFramesFunction = (i === 9) ? this.sumAllFrames('-') : this.sumFrames(i*2+2, '-')
             return <div key={i} id={i}>{!!this.props.rolls[i*2] ? sumFramesFunction : '-'}</div>
