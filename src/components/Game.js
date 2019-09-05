@@ -58,12 +58,13 @@ export default class Game extends React.Component{
     const id = e.target.id.split('-')
     const playerIndex = parseInt(id[1])
     const rollIndex = parseInt(id[2])
-    if(this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber)) {
+    const isAcceptableRollInput = this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber)
+    if(isAcceptableRollInput) {
       const playersCopy = _.cloneDeep(this.state.players)
       playersCopy[playerIndex].rolls[rollIndex] = lastNumber.toUpperCase()
       this.setState({players: playersCopy})
     }
-    return(this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber))
+    return(isAcceptableRollInput)
   }
 
   isAcceptableRollInput = (playerIndex, rollIndex, lastNumber) => { // considering putting each of these in their own functions, as well, for clarity
