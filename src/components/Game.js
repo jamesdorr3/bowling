@@ -58,14 +58,52 @@ export default class Game extends React.Component{
     const id = e.target.id.split('-')
     const playerIndex = parseInt(id[1])
     const rollIndex = parseInt(id[2])
-    if( ((rollIndex%2===0 || rollIndex===19) && lastNumber.match(/[0-9x]/i) ) || // only the first throw/roll of each frame can have a strike X except the last frame
-      ( (rollIndex%2===1 || rollIndex===20) && lastNumber.match(/[0-9/]/) ) || // 2nd throws/rolls of each frames can have spares / but not strikes X
-      lastNumber === ''
-    ) {
+    if(this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber)) {
       const playersCopy = _.cloneDeep(this.state.players)
       playersCopy[playerIndex].rolls[rollIndex] = lastNumber.toUpperCase()
       this.setState({players: playersCopy})
     }
+    return(this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber))
+  }
+
+  isAcceptableRollInput = (playerIndex, rollIndex, lastNumber) => { // considering putting each of these in their own functions, as well, for clarity
+    const rolls = this.state.players[playerIndex].rolls
+
+    // DELETE
+    if(lastNumber===''){return true}
+
+    // FIRST 9 FRAMES, FIRST THROW OF 10th FRAME
+    if(rollIndex<19){
+      if(rollIndex%2===1 && rolls[rollIndex-1]!=='X'){ // 2nd roll in frame, cannot exist if first roll is strike
+        if(!!parseInt(lastNumber) || lastNumber==='0'){ // if lastNumber is a digit
+          return ( (parseInt(lastNumber) + parseInt(rolls[rollIndex-1]) < 10) ) // two digits <= 9, otherwise it must be spare. Automatically rejects any digits after X because X + digit is NaN
+        }else{ return lastNumber==='/' } // 2nd roll can only be a spare or a digit (above)
+      }else if(rollIndex%2===0){ return lastNumber.match(/[0-9x]/i)} // first roll in frame
+
+    // 10th FRAME, 2nd THROW
+    }else if(rollIndex===19){
+      if(rolls[18]==='X'){return lastNumber.match(/[0-9x]/i)} // if 10th frame 1st roll is strike, 2nd roll must be digit or strike
+      else{ // if 10th frame 1st roll is NOT strike
+        if(lastNumber==='/'){return true} // can be a spare
+        else{ // is digit and not more than 9
+          return lastNumber.match(/[0-9]/) && (parseInt(lastNumber) + parseInt(rolls[rollIndex-1]) < 10)
+        }
+      } 
+    // 10th FRAME, 3rd THROW
+    }else if(rollIndex===20){ // 10th frame, 3rd throw
+      if(rolls[19]==='/'){ // if 10th frame, 2nd throw is a spare
+        return lastNumber.match(/[0-9x]/i) // can only be a digit or strike
+      }else if (rolls[18]==='X'){ // if 10th frame, 1st throw is a strike, you get a 3rd throw
+        if(rolls[19]==='X'){ // if 10th frame, 2nd throw is a strike
+          return lastNumber.match(/[0-9x]/i) // it can be a digit or a spare
+        }else{ // 10th frame, 2nd throw is not a strike nor a spare (above)
+          return (parseInt(lastNumber) + parseInt(rolls[rollIndex-1]) < 10)
+        }
+      }
+    }
+
+    // ALL ELSE
+    return false
   }
 
   addPlayerButton = <button onClick={this.handleAddPlayer} className='addPlayerButton'>Add Player</button>

@@ -33,9 +33,8 @@ export default class Player extends React.Component{
     })
   }
 
-  handleUpdateRoll = (e) => {
-    this.props.handleUpdateRoll(e)
-    if(this.props.autoAdvance){
+  handleUpdateRoll = (e) => { // yesssss! Only changes focus if input is accepted && autoAdvance is on
+    if(this.props.handleUpdateRoll(e) && this.props.autoAdvance){
       this.determineNextFocus(e, e.target.value.toUpperCase())
     }
   }
@@ -100,7 +99,7 @@ export default class Player extends React.Component{
   }
 
   determineNextFocus = (e, lastNumber) => {
-    if(lastNumber===''){return}
+    if(!lastNumber.match(/[0-9x/]/i)){return}
     const ids = e.target.id.split('-')
     const rollIndex = parseInt(ids[2])
     const playerIndex = parseInt(ids[1])
