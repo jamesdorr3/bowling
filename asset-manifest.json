@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/bowling/static/css/main.b09148b8.chunk.css",
-    "main.js": "/bowling/static/js/main.5e77aa25.chunk.js",
-    "main.js.map": "/bowling/static/js/main.5e77aa25.chunk.js.map",
+    "main.js": "/bowling/static/js/main.3d8616a8.chunk.js",
+    "main.js.map": "/bowling/static/js/main.3d8616a8.chunk.js.map",
     "runtime~main.js": "/bowling/static/js/runtime~main.d9788219.js",
     "runtime~main.js.map": "/bowling/static/js/runtime~main.d9788219.js.map",
     "static/js/2.07e697a2.chunk.js": "/bowling/static/js/2.07e697a2.chunk.js",
     "static/js/2.07e697a2.chunk.js.map": "/bowling/static/js/2.07e697a2.chunk.js.map",
     "index.html": "/bowling/index.html",
-    "precache-manifest.2da01555bf2bf95e048a23e95a5b7ea1.js": "/bowling/precache-manifest.2da01555bf2bf95e048a23e95a5b7ea1.js",
+    "precache-manifest.aebed283c52b782cc6eb8edde709bbc7.js": "/bowling/precache-manifest.aebed283c52b782cc6eb8edde709bbc7.js",
     "service-worker.js": "/bowling/service-worker.js",
     "static/css/main.b09148b8.chunk.css.map": "/bowling/static/css/main.b09148b8.chunk.css.map"
   }
