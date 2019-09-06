@@ -1,5 +1,5 @@
 html{background-image:url(https://media.istockphoto.com/vectors/vector-bowling-seamless-pattern-color-background-and-outline-design-vector-id585607042)}
-body{background:rgba(255, 255, 255, 0.9);height:100%;margin:10px 5px 0px;padding:5px;border-radius:5px}
+body{height:100%;margin:10px 5px 0px;padding:5px;background:rgba(255, 255, 255, 0.9);border-radius:5px}
 
 .App{text-align:center}
 .App h1{text-align:center;margin:0}
@@ -29,12 +29,13 @@ input, button{font-size:15px;padding:5px 10px;overflow:hidden;}
 .autoAdvanceContainer input:checked ~ span span{right:-1px;transition:0.25s}
 .autoAdvanceContainer input:checked ~ span{background-position:left bottom;transition:0.25s}
 
-.player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white;text-align:left}
+.player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white;text-align:left;transition:1s;overflow:hidden;}
+.off{background:transparent;transition:1s;transform:translate(-110%, 0px)}
 .player input,.player button{margin:0px 5px}
 .player input.nameInput{width:300px;max-width:30%}
 .player input{box-shadow:inset 0.5px 0.5px 0.5px gray;}
 .player button{background:#EF2547;position:relative;float:right;color:white;font-weight:bold;width:25%;max-width:350px;white-space:nowrap}
-.player button.clearScoreButton{background:#F8AF19;width:auto;}
+.player .clearScoreButton{background:#F8AF19;width:auto;}
 
 .playerGame{border:1px solid black;padding:0;display:grid;grid-template-columns:repeat(22,1fr);margin:10px 5px 5px;height:90px;border-radius:3px;overflow:hidden}
 .playerGame span{text-align:center;}

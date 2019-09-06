@@ -3,8 +3,12 @@ import React from 'react'
 
 export default class Player extends React.Component{
 
+  state = {
+    className:'player off'
+  }
+
   componentDidMount = () => { // takes user through all nameInputs and then to the game
-    // this[`name-${this.props.id}`].focus()
+    setTimeout(()=>this.setState({className: 'player'}), 1)
     this[`name-${this.props.id}`].addEventListener('keydown',e =>{
       if(e.key==="Tab" || e.key==="Enter"){
         e.preventDefault()
@@ -148,14 +152,19 @@ export default class Player extends React.Component{
   //   .then(r => console.log(r))
   // }
 
+  handleDeletePlayer = () => {
+    this.setState({className:'player off'})
+    setTimeout(()=>this.props.handleDeletePlayer(this.props.id), 1000)
+  }
+
   render(){
     return(
-      <div className="player" onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
+      <div className={this.state.className} onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
         <input value={this.props.playerName} name='nameInput' id={`name-${this.props.id}`} className='nameInput'
         onChange={this.props.handleNameChange} placeholder={`Player ${this.props.id+1}`} ref={input => this[`name-${this.props.id}`] = input} 
         autoFocus
         />
-        <button onClick={() => this.props.handleDeletePlayer(this.props.id)}>Delete {this.props.playerName}</button>
+        <button onClick={this.handleDeletePlayer}>Delete {this.props.playerName}</button>
         <button className='clearScoreButton' onClick={() => this.props.clearScore(this.props.id)}>Clear Score</button>
         <div className='playerGame'>
           {this.createFrames()}
