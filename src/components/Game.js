@@ -12,7 +12,7 @@ export default class Game extends React.Component{
     return [...rolls]
   }
 
-  newPlayer = (name = '') => ({name:name,rolls:this.makeAllRolls()})
+  newPlayer = (name = '') => ({name:name,rolls:this.makeAllRolls(),id:Math.random()})
 
   state = {
     players: [
@@ -20,18 +20,20 @@ export default class Game extends React.Component{
       _.cloneDeep(this.newPlayer('Nick'))
     ],
     autoAdvance: true,
+    in: true
     // leaderBoard: []
   }
 
-  // componentDidMount = () => {
-  //   fetch(`${URL}/bowling`)
-  //   .then(r=>r.json())
-  //   .then(r => {
-  //     if(r.length > 0 && r[0].name){
-  //       this.setState({leaderBoard: r})
-  //     }
-  //   })
-  // }
+  componentDidMount = () => {
+    // fetch(`${URL}/bowling`)
+    // .then(r=>r.json())
+    // .then(r => {
+    //   if(r.length > 0 && r[0].name){
+    //     this.setState({leaderBoard: r})
+    //   }
+    // })
+    setTimeout(500, ()=>this.setState({display:true}))
+  }
 
   handleAddPlayer = () => {
     const playersCopy = [...this.state.players] // only shallow copy needed
@@ -58,12 +60,13 @@ export default class Game extends React.Component{
     const id = e.target.id.split('-')
     const playerIndex = parseInt(id[1])
     const rollIndex = parseInt(id[2])
-    if(this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber)) {
+    const isAcceptableRollInput = this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber)
+    if(isAcceptableRollInput) {
       const playersCopy = _.cloneDeep(this.state.players)
       playersCopy[playerIndex].rolls[rollIndex] = lastNumber.toUpperCase()
       this.setState({players: playersCopy})
     }
-    return(this.isAcceptableRollInput(playerIndex, rollIndex, lastNumber))
+    return(isAcceptableRollInput)
   }
 
   isAcceptableRollInput = (playerIndex, rollIndex, lastNumber) => { // considering putting each of these in their own functions, as well, for clarity
@@ -116,6 +119,10 @@ export default class Game extends React.Component{
     this.setState({players: playersCopy})
   }
 
+  random = () => {
+    return Math.random()
+  }
+
   render(){
     return(
       <div className='game'>
@@ -125,11 +132,14 @@ export default class Game extends React.Component{
           <input type='checkbox' checked={this.state.autoAdvance} onChange={this.toggleAutoAdvance} />
           <span><span/></span>
         </span>
-        {this.state.players.map((player, i)=>< Player playerName={player.name} rolls={player.rolls} key={i} id={i} 
-          handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
-          handleUpdateRoll={this.handleUpdateRoll} autoAdvance={this.state.autoAdvance}
-          clearScore={this.clearScore}
-          />)}
+        {this.state.players.map((player, i)=>(
+            < Player playerName={player.name} rolls={player.rolls} key={player.id} id={i} 
+              handleNameChange={this.handleNameChange} handleDeletePlayer={this.handleDeletePlayer}
+              handleUpdateRoll={this.handleUpdateRoll} autoAdvance={this.state.autoAdvance}
+              clearScore={this.clearScore}
+            />
+          )
+        )}
         {this.state.players.length > 3 ? this.addPlayerButton : null}
         {/* {this.state.leaderBoard[0] ? this.state.leaderBoard.map(game=>{
           return <p>{`${game.name} - ${game.total}`}</p>
