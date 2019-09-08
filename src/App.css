@@ -29,8 +29,8 @@ input, button{font-size:15px;padding:5px 10px;overflow:hidden;}
 .autoAdvanceContainer input:checked ~ span span{right:-1px;transition:0.25s}
 .autoAdvanceContainer input:checked ~ span{background-position:left bottom;transition:0.25s}
 
-.player{border:1px solid black;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white;text-align:left;transition:1s;overflow:hidden;}
-.off{background:transparent;transition:1s;transform:translate(-110%, 0px)}
+.player{max-height:150px;border:1px solid black;transition:transform 0.25s 0.125s, max-height 0.125s;margin:5px;padding:5px;border-radius:3px;box-shadow:4px 4px 5px gray;background:white;text-align:left;overflow:hidden;}
+.off{max-height:0px;background:transparent;transition:transform 0.25s, max-height 0.25s 0.125s;transform:translate(-110%, 0px);border:none;padding:0px;margin:0px}
 .player input,.player button{margin:0px 5px}
 .player input.nameInput{width:300px;max-width:30%}
 .player input{box-shadow:inset 0.5px 0.5px 0.5px gray;}

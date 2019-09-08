@@ -19,7 +19,7 @@ function App() {
             <td>Strike</td><td>X</td><td>You knocked down all 10 pins on the first throw of a frame.</td><td>10 + the number of pins knocked down on your next 2 throws</td>
           </tr>
           <tr>
-            <td>Spare</td><td>/</td><td>You knocked down all 10 pins on the second throw.</td><td>10 for the frame + the number of pins knocked down on your next throw</td>
+            <td>Spare</td><td>/</td><td>You knocked down all 10 pins using both throws of the frame.</td><td>10 for the frame + the number of pins knocked down on your next throw</td>
           </tr>
           <tr>
             <td></td><td>0-9</td><td>You knocked down this many pins, <b>not</b> all the pins</td><td>The number of pins you knocked down</td>
