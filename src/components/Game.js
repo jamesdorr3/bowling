@@ -16,8 +16,7 @@ export default class Game extends React.Component{
 
   state = {
     players: [
-      _.cloneDeep(this.newPlayer('Tejal')),
-      _.cloneDeep(this.newPlayer('Nick'))
+      _.cloneDeep(this.newPlayer())
     ],
     autoAdvance: true,
     in: true

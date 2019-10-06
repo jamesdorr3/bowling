@@ -158,7 +158,6 @@ export default class Player extends React.Component{
   }
 
   render(){
-    console.log(React.version)
     return(
       <div className={this.state.className} onClick={this.directFocusToChild} id={`player-${this.props.id}`}>
         <input value={this.props.playerName} name='nameInput' id={`name-${this.props.id}`} className='nameInput'
