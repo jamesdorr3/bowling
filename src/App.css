@@ -16,7 +16,7 @@ td,th{border:1px solid black}
 tr{} */
 
 input, button{font-size:15px;padding:5px 10px;overflow:hidden;}
-.game button.addPlayerButton{background:rgb(65, 147, 194);color:white;margin:5px;padding:10px;font-weight:bold}
+.game button.addPlayerButton{background:rgb(61, 104, 129);color:white;margin:5px;padding:10px;font-weight:bold}
 * button,.autoAdvanceContainer{border-radius:3px;box-shadow:3px 3px 5px gray;border:1px solid black}
 * button:hover,.autoAdvanceContainer:hover{box-shadow:2px 2px 4px gray;}
 
